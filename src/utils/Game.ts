@@ -10,7 +10,7 @@ export default class Game {
   hostId: string;
   pin: string;
   gameData: GameData;
-  players: Player[];
+  private players: Player[];
   constructor(hostId: string, pin: number | string) {
     this.hostId = hostId;
     this.pin = String(pin);
@@ -21,6 +21,10 @@ export default class Game {
   addPlayer(player: Player) {
     this.players.push(player);
     return player;
+  }
+
+  getPlayers() {
+    return this.players;
   }
 
   nextQuestion() {

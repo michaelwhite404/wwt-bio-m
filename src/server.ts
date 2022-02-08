@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
     socket.join(game.pin);
     console.log(`${username} joined`);
 
-    socket.emit("player-ready");
+    socket.to(game.pin).emit("update-lobby", game.getPlayers());
   });
 });
 
