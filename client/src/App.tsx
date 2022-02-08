@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Outlet, Route, Routes } from "react-router-dom";
 import { SocketIoProvider } from "./context";
-import { Host } from "./pages";
+import { Host, Player } from "./pages";
 
 function App() {
   // const [socket, setSocket] = useState<Socket>();
@@ -26,7 +26,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Outlet />}>
               <Route path="host" element={<Host />} />
-              <Route path="play" element={<div>I am a player</div>} />
+              <Route path="play" element={<Player />} />
               <Route path="main-player" element={<div>I am the main player</div>} />
             </Route>
           </Routes>

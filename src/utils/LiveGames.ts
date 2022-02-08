@@ -9,14 +9,15 @@ export default class LiveGames {
     this.games.push(game);
     return game;
   }
-  removeGame(hostId: string) {
-    var game = this.getGame(hostId);
+  removeGame(pin: string) {
+    var game = this.getGame(pin);
     if (game) {
-      this.games = this.games.filter((game) => game.hostId !== hostId);
+      this.games = this.games.filter((game) => game.pin !== pin);
     }
     return game;
   }
-  getGame(hostId: string) {
-    return this.games.filter((game) => game.hostId === hostId)[0];
+  getGame(pin: string) {
+    const game = this.games.find((game) => game.pin === pin);
+    return game;
   }
 }
