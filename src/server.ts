@@ -3,6 +3,13 @@ const app = express();
 import http from "http";
 const server = http.createServer(app);
 import { Server } from "socket.io";
+import randomInt from "./helpers/randomInt";
+
+// Import classes
+import { Game, LiveGames } from "./utils";
+
+const games = new LiveGames();
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
@@ -30,6 +37,21 @@ io.on("connection", (socket) => {
     // console.log(sockets);
 
     console.log("LAST");
+  });
+
+  socket.on("host-join", async ({ gameId }) => {
+    console.log(`Host joined!: ${gameId}`);
+    const pin = randomInt(Math.pow(10, 6), Math.pow(10, 7) - 1);
+    const game = games.addGame(new Game(socket.id, pin, {}));
+
+    socket.join(String(game.pin)); //The host is joining a room based on the pin
+
+    socket.emit("show-game-pin", {
+      gamePin: pin,
+    });
+
+    const sockets = await io.in(`${game.pin}`).fetchSockets();
+    console.log(sockets.map((s) => s.id));
   });
 });
 

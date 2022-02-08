@@ -1,7 +1,7 @@
 import Game from "./Game";
 
 export default class LiveGames {
-  games: Game[];
+  private games: Game[];
   constructor() {
     this.games = [];
   }

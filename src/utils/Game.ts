@@ -1,12 +1,18 @@
 export default class Game {
   hostId: string;
-  pin: string;
+  pin: number;
   gameData: any;
   live: boolean;
-  constructor(hostId: string, pin: string, gameData: any) {
+  mainPlayerId?: string;
+  constructor(hostId: string, pin: number, gameData: any) {
     this.hostId = hostId;
     this.pin = pin;
     this.gameData = gameData;
     this.live = false;
+    this.mainPlayerId = undefined;
+  }
+
+  addMainPlayer(playerId: string) {
+    this.mainPlayerId = playerId;
   }
 }
