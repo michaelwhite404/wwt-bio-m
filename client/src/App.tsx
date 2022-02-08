@@ -1,26 +1,37 @@
-import React, { useEffect, useState } from "react";
 import "./App.css";
-import io, { Socket } from "socket.io-client";
+import { BrowserRouter as Router, Outlet, Route, Routes } from "react-router-dom";
+import { SocketIoProvider } from "./context";
+import { Host } from "./pages";
 
 function App() {
-  const [socket, setSocket] = useState<Socket>();
+  // const [socket, setSocket] = useState<Socket>();
 
-  useEffect(() => {
-    const newSocket = io(`http://127.0.0.1:7789`);
-    setSocket(newSocket);
-  }, []);
+  // useEffect(() => {
+  //   const newSocket = io(`http://127.0.0.1:7789`);
+  //   setSocket(newSocket);
+  // }, []);
 
-  const handleClick = () => {
-    socket?.emit("test", { test: true });
-  };
+  // const handleClick = () => {
+  //   if (!socket) return;
+  //   socket?.emit("test", { test: true });
+  // };
 
-  socket?.on("test", (value) => console.log(value));
+  // socket?.on("test", (value) => console.log(value));
 
   return (
     <div className="App">
-      <header className="App-header">
-        <button onClick={handleClick}>Emit test</button>
-      </header>
+      <header>{/* <button>Emit test</button> */}</header>
+      <SocketIoProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Outlet />}>
+              <Route path="host" element={<Host />} />
+              <Route path="play" element={<div>I am a player</div>} />
+              <Route path="main-player" element={<div>I am the main player</div>} />
+            </Route>
+          </Routes>
+        </Router>
+      </SocketIoProvider>
     </div>
   );
 }
