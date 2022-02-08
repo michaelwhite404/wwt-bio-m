@@ -1,5 +1,9 @@
-import { useContext } from "react";
+import { useContext, useDebugValue } from "react";
 import { SocketIoContext } from "../context/SocketIoProvider";
 
-const useSocketIo = () => useContext(SocketIoContext);
+const useSocketIo = () => {
+  const socketIoContext = useContext(SocketIoContext);
+  useDebugValue(socketIoContext?.id);
+  return socketIoContext;
+};
 export default useSocketIo;

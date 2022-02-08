@@ -1,0 +1,25 @@
+{
+  "gameId": "103ed713-6d83-4c87-ab1d-a456974307a1",
+  "questions": [
+    {
+      "question": "This is question #1. The answer is A",
+      "answers": [
+        { "answer": "This is the answer", "letter": "A" },
+        { "answer": "This is not the answer", "letter": "B" },
+        { "answer": "This is not the answer", "letter": "C" },
+        { "answer": "This is not the answer", "letter": "D" }
+      ],
+      "correctAnswer": "A"
+    },
+    {
+      "question": "This is question #2. The answer is B",
+      "answers": [
+        { "answer": "This is not the answer", "letter": "A" },
+        { "answer": "This is the answer", "letter": "B" },
+        { "answer": "This is not the answer", "letter": "C" },
+        { "answer": "This is not the answer", "letter": "D" }
+      ],
+      "correctAnswer": "B"
+    }
+  ]
+}

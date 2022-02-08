@@ -3,6 +3,8 @@ const app = express();
 import http from "http";
 const server = http.createServer(app);
 import { Server } from "socket.io";
+import fs from "fs";
+import path from "path";
 import randomInt from "./helpers/randomInt";
 
 // Import classes
@@ -17,9 +19,20 @@ const io = new Server(server, {
   },
 });
 
+const findGame = (gameId: string) => {
+  // const;
+  const pathname = path.join(__dirname, "../games");
+  const files = fs.readdirSync(pathname);
+  const arr = files.map((file) => {
+    const raw = fs.readFileSync(`${pathname}/${file}`);
+    return JSON.parse(raw.toString("utf-8"));
+  });
+
+  return arr.find((game) => game.gameId === gameId);
+};
+
 io.on("connection", (socket) => {
   console.log("A user connected: " + socket.id);
-
   socket.on("test", async (value) => {
     console.log("received");
     socket.join("my-room");
@@ -40,7 +53,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("host-join", async ({ gameId }) => {
-    console.log(`Host joined!: ${gameId}`);
+    // console.log(`Host joined!: ${gameId}`);
+    const foundGame = findGame(gameId);
+    if (!foundGame) return socket.emit("no-game-found");
+
     const pin = randomInt(Math.pow(10, 6), Math.pow(10, 7) - 1);
     const game = games.addGame(new Game(socket.id, pin));
 
@@ -58,6 +74,7 @@ io.on("connection", (socket) => {
     const game = games.getGame(pin);
     if (!game) return socket.emit("no-game-found");
 
+    if (game.getPlayers().some((p) => p.socketId === socket.id)) return;
     const player = game.addPlayer(new Player(username, socket.id));
     socket.join(game.pin);
     console.log(`${username} joined`);
