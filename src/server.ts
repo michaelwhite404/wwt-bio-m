@@ -58,28 +58,27 @@ io.on("connection", (socket) => {
     if (!foundGame) return socket.emit("no-game-found");
 
     const pin = randomInt(Math.pow(10, 6), Math.pow(10, 7) - 1);
-    const game = games.addGame(new Game(socket.id, pin));
+    const game = games.addGame(new Game(socket, pin));
 
-    socket.join(game.pin); //The host is joining a room based on the pin
+    socket.emit("show-game-pin", { gamePin: game.pin });
 
-    socket.emit("show-game-pin", {
-      gamePin: pin,
-    });
-
-    // const sockets = await io.in(`${game.pin}`).fetchSockets();
+    // const sockets = await io.in(game.pin).fetchSockets();
     // console.log(sockets.map((s) => s.id));
   });
 
-  socket.on("player-join", ({ pin, username }) => {
+  socket.on("player-join", async ({ pin, username }) => {
     const game = games.getGame(pin);
     if (!game) return socket.emit("no-game-found");
 
-    if (game.getPlayers().some((p) => p.socketId === socket.id)) return;
-    const player = game.addPlayer(new Player(username, socket.id));
-    socket.join(game.pin);
-    console.log(`${username} joined`);
+    if (game.getPlayers().some((p) => p.socket.id === socket.id)) return;
+    game.addPlayer(new Player(username, socket));
 
-    socket.to(game.pin).emit("update-lobby", game.getPlayers());
+    socket.to(game.pin).emit(
+      "update-lobby",
+      game.getPlayers().map((p) => ({
+        username: p.username,
+      }))
+    );
   });
 });
 

@@ -2,13 +2,12 @@ import qs from "qs";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSocketIo } from "../hooks";
-import { Player } from "../../../src/utils";
 
 export default function Host() {
   const socket = useSocketIo();
   const location = useLocation();
   const [pin, setPin] = useState<number>();
-  const [players, setPlayers] = useState<Player[]>([]);
+  const [players, setPlayers] = useState<{ username: string }[]>([]);
   const [gameFound, setGameFound] = useState<boolean>();
 
   useEffect(() => {
@@ -32,8 +31,8 @@ export default function Host() {
           <div>Game Pin: {pin}</div>
           <br />
           <div>Players</div>
-          {players.map((p) => (
-            <div key={p.socketId}>{p.username}</div>
+          {players.map((p, i) => (
+            <div key={`user-${i}`}>{p.username}</div>
           ))}
         </>
       ) : (

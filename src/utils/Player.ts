@@ -1,10 +1,12 @@
+import { Socket } from "socket.io";
+
 export default class Player {
   username: string;
-  socketId: string;
+  socket: Socket;
   correctAnswers: number;
-  constructor(username: string, socketId: string) {
+  constructor(username: string, socket: Socket) {
     this.username = username;
-    this.socketId = socketId;
+    this.socket = socket;
     this.correctAnswers = 0;
   }
 }
