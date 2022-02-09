@@ -1,5 +1,6 @@
 import Player from "./Player";
 import { Socket } from "socket.io";
+import { Question } from "../../types/Question";
 
 interface GameData {
   playersAnswered: number;
@@ -12,12 +13,15 @@ export default class Game {
   pin: string;
   gameData: GameData;
   private players: Player[];
-  constructor(hostSocket: Socket, pin: number | string) {
+  private questions: Question[];
+  constructor(hostSocket: Socket, pin: number | string, questions: Question[]) {
     this.hostSocket = hostSocket;
     this.pin = String(pin);
     this.gameData = { playersAnswered: 0, questionLive: false, question: 1 };
     this.players = [];
+    this.questions = questions;
     this.hostSocket.join(this.pin); // The host is joining a room based on the pin
+    console.log(this);
   }
 
   addPlayer(player: Player) {

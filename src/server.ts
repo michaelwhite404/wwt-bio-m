@@ -20,7 +20,6 @@ const io = new Server(server, {
 });
 
 const findGame = (gameId: string) => {
-  // const;
   const pathname = path.join(__dirname, "../games");
   const files = fs.readdirSync(pathname);
   const arr = files.map((file) => {
@@ -58,7 +57,7 @@ io.on("connection", (socket) => {
     if (!foundGame) return socket.emit("no-game-found");
 
     const pin = randomInt(Math.pow(10, 6), Math.pow(10, 7) - 1);
-    const game = games.addGame(new Game(socket, pin));
+    const game = games.addGame(new Game(socket, pin, foundGame.questions));
 
     socket.emit("show-game-pin", { gamePin: game.pin });
 
@@ -80,6 +79,8 @@ io.on("connection", (socket) => {
       }))
     );
   });
+
+  socket.on("host-start", () => {});
 });
 
 const port = process.env.PORT || 7789;
