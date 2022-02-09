@@ -33,9 +33,14 @@ export default class Game {
   getPlayers() {
     return this.players;
   }
+  getPlayer(playerId: string) {
+    this.players.find((player) => player.socket.id === playerId);
+  }
+
   startGame() {
     this.gameData = { ...this.gameData, questionLive: true };
     this.hostSocket.in(this.pin).emit("player-start-game");
+    this.hostSocket.emit("new-question", this.questions[0]);
     return this;
   }
 
