@@ -80,7 +80,11 @@ io.on("connection", (socket) => {
     );
   });
 
-  socket.on("host-start", () => {});
+  socket.on("host-start-game", () => {
+    const game = games.getGameByHostId(socket.id);
+    if (!game) return socket.emit("no-game-found");
+    game.startGame();
+  });
 });
 
 const port = process.env.PORT || 7789;

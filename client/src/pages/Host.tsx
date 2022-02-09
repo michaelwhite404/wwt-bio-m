@@ -23,6 +23,8 @@ export default function Host() {
     });
   }, [location.search, socket]);
 
+  const startGame = () => socket?.emit("host-start-game");
+
   return (
     <div>
       {gameFound !== false ? (
@@ -34,6 +36,7 @@ export default function Host() {
           {players.map((p, i) => (
             <div key={`user-${i}`}>{p.username}</div>
           ))}
+          <button onClick={startGame}>Start Game</button>
         </>
       ) : (
         "No game found"

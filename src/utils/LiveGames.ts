@@ -20,4 +20,9 @@ export default class LiveGames {
     const game = this.games.find((game) => game.pin === pin);
     return game;
   }
+
+  getGameByHostId(hostId: string) {
+    const game = this.games.find((game) => game.hostSocket.id === hostId);
+    return game;
+  }
 }

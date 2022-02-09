@@ -21,17 +21,22 @@ export default class Game {
     this.players = [];
     this.questions = questions;
     this.hostSocket.join(this.pin); // The host is joining a room based on the pin
-    console.log(this);
   }
 
   addPlayer(player: Player) {
     this.players.push(player);
     player.socket.join(this.pin);
+    player.socket.emit("player-ready");
     return player;
   }
 
   getPlayers() {
     return this.players;
+  }
+  startGame() {
+    this.gameData = { ...this.gameData, questionLive: true };
+    this.hostSocket.in(this.pin).emit("player-start-game");
+    return this;
   }
 
   nextQuestion() {
