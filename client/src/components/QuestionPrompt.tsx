@@ -1,6 +1,13 @@
 import { Question } from "../../../types/Question";
+import SimplePlayer from "../../../types/SimplePlayer";
 
-export default function QuestionPrompt({ question }: { question: Question }) {
+export default function QuestionPrompt({
+  question,
+  players,
+}: {
+  question: Question;
+  players: SimplePlayer[];
+}) {
   return (
     <div>
       <div>{question.question}</div>
@@ -11,6 +18,7 @@ export default function QuestionPrompt({ question }: { question: Question }) {
           </div>
         ))}
       </div>
+      <br />0 / {players.length - 1} players selected
     </div>
   );
 }

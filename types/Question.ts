@@ -1,3 +1,5 @@
+import LetterAnswer from "./LetterAnswer";
+
 export interface Question {
   question: string;
   answers: Answer[];
@@ -6,5 +8,5 @@ export interface Question {
 
 interface Answer {
   answer: string;
-  letter: string;
+  letter: LetterAnswer;
 }

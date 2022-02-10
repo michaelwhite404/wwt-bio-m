@@ -13,7 +13,9 @@ export default function ChoosePlayer({ players, hostSocket }: ChoosePlayerProps)
   return (
     <div>
       {players.map((player) => (
-        <button onClick={() => playerSelect(player)}>{player.username}</button>
+        <button key={player.socketId} onClick={() => playerSelect(player)}>
+          {player.username}
+        </button>
       ))}
     </div>
   );

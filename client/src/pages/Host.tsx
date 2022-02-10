@@ -53,7 +53,7 @@ export default function Host() {
       ) : (
         "No game found"
       )}
-      {currentQuestion && <QuestionPrompt question={currentQuestion} />}
+      {currentQuestion && <QuestionPrompt question={currentQuestion} players={players} />}
       {choosingPlayer && <ChoosePlayer hostSocket={socket} players={players} />}
     </div>
   );
