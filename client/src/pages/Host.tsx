@@ -3,15 +3,19 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSocketIo } from "../hooks";
 import { Question } from "../../../types/Question";
+import SimplePlayer from "../../../types/SimplePlayer";
 import QuestionPrompt from "../components/QuestionPrompt";
+import ChoosePlayer from "../components/ChoosePlayer";
 
 export default function Host() {
   const socket = useSocketIo();
   const location = useLocation();
   const [pin, setPin] = useState<number>();
-  const [players, setPlayers] = useState<{ username: string }[]>([]);
+  const [players, setPlayers] = useState<SimplePlayer[]>([]);
   const [gameFound, setGameFound] = useState<boolean>();
-  const [currentQuestion, setCurentQuestion] = useState<Question>();
+  const [currentQuestion, setCurrentQuestion] = useState<Question>();
+  const [choosingPlayer, setChoosingPlayer] = useState(false);
+  const [chosenPlayer, setChosenPlayer] = useState<SimplePlayer>();
 
   useEffect(() => {
     const queryStr = qs.parse(location.search.slice(1));
@@ -20,14 +24,22 @@ export default function Host() {
       setPin(gamePin);
       setGameFound(true);
     });
-    socket?.on("update-lobby", setPlayers);
-    socket?.on("no-game-found", () => {
-      setGameFound(false);
+    socket?.on("update-lobby", (players) => {
+      setPlayers(players);
+      console.log(players);
     });
-    socket?.on("new-question", setCurentQuestion);
+    socket?.on("no-game-found", () => setGameFound(false));
+    socket?.on("choose-player", setChoosingPlayer);
+    socket?.on("show-question", showQuestion);
   }, [location.search, socket]);
 
   const startGame = () => socket?.emit("host-start-game");
+  const showQuestion = (props: { mainPlayer: SimplePlayer; question: Question }) => {
+    console.log(props);
+    setChoosingPlayer(false);
+    setChosenPlayer(props.mainPlayer);
+    setCurrentQuestion(props.question);
+  };
 
   return (
     <div>
@@ -46,6 +58,7 @@ export default function Host() {
         "No game found"
       )}
       {currentQuestion && <QuestionPrompt question={currentQuestion} />}
+      {choosingPlayer && <ChoosePlayer hostSocket={socket} players={players} />}
     </div>
   );
 }

@@ -9,6 +9,7 @@ import randomInt from "./helpers/randomInt";
 
 // Import classes
 import { Game, LiveGames, Player } from "./utils";
+import SimplePlayer from "../types/SimplePlayer";
 
 const games = new LiveGames();
 
@@ -76,6 +77,7 @@ io.on("connection", (socket) => {
       "update-lobby",
       game.getPlayers().map((p) => ({
         username: p.username,
+        socketId: p.socket.id,
       }))
     );
   });
@@ -84,6 +86,12 @@ io.on("connection", (socket) => {
     const game = games.getGameByHostId(socket.id);
     if (!game) return socket.emit("no-game-found");
     game.startGame();
+  });
+
+  socket.on("player-selected", (player: SimplePlayer) => {
+    const game = games.getGameByHostId(socket.id);
+    if (!game) return socket.emit("no-game-found");
+    game.chooseMainPlayer(player.socketId);
   });
 });
 
