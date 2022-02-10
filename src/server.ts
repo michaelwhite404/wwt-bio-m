@@ -10,6 +10,7 @@ import randomInt from "./helpers/randomInt";
 // Import classes
 import { Game, LiveGames, Player } from "./utils";
 import SimplePlayer from "../types/SimplePlayer";
+import LetterAnswer from "../types/LetterAnswer";
 
 const games = new LiveGames();
 
@@ -93,6 +94,15 @@ io.on("connection", (socket) => {
     if (!game) return socket.emit("no-game-found");
     game.chooseMainPlayer(player.socketId);
   });
+
+  socket.on(
+    "player-answer-question",
+    ({ answered, pin }: { answered: LetterAnswer; pin: string }) => {
+      const game = games.getGame(pin);
+      if (!game) return socket.emit("no-game-found");
+      game.answerQuestion(socket.id, answered);
+    }
+  );
 });
 
 const port = process.env.PORT || 7789;

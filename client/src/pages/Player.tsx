@@ -25,7 +25,7 @@ export default function Player() {
   }, [socket]);
 
   const answerQuestion = (letterSelected: LetterAnswer) => {
-    socket?.emit("player-answer-question", { answered: letterSelected });
+    socket?.emit("player-answer-question", { pin: data.pin, answered: letterSelected });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

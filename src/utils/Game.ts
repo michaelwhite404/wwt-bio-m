@@ -2,16 +2,12 @@ import Player from "./Player";
 import { Socket } from "socket.io";
 import { Question } from "../../types/Question";
 import SimplePlayer from "../../types/SimplePlayer";
-
-interface GameData {
-  playersAnswered: number;
-  questionLive: boolean;
-  question: number;
-}
+import LetterAnswer from "../../types/LetterAnswer";
+import GameData from "../../types/GameData";
 
 export default class Game {
-  hostSocket: Socket;
-  pin: string;
+  readonly hostSocket: Socket;
+  readonly pin: string;
   gameData: GameData;
   private players: Player[];
   private questions: Question[];
@@ -64,15 +60,26 @@ export default class Game {
   }
 
   private nextQuestion() {
-    this.gameData = { playersAnswered: 0, questionLive: true, question: this.gameData.question++ };
+    this.gameData = { playersAnswered: 0, questionLive: true, question: ++this.gameData.question };
     const data = {
       mainPlayer: {
         username: this.mainPlayer!.username,
         socketId: this.mainPlayer!.socket.id,
       } as SimplePlayer,
-      question: this.questions[this.gameData.question],
+      question: this.questions[this.gameData.question - 1],
     };
     this.hostSocket.emit("show-question", data);
     this.hostSocket.in(this.pin).emit("show-question", data);
+  }
+
+  answerQuestion(socketId: string, answer: LetterAnswer) {
+    const player = this.getPlayer(socketId);
+    if (!player) return;
+    if (answer === this.questions[this.gameData.question - 1].correctAnswer) {
+      player.correct();
+    }
+    // TODO: deny multiple answers
+    this.gameData.playersAnswered++;
+    this.hostSocket.emit("player-answer-question", this.gameData);
   }
 }
