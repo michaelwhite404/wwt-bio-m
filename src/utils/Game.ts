@@ -65,12 +65,14 @@ export default class Game {
 
   private nextQuestion() {
     this.gameData = { playersAnswered: 0, questionLive: true, question: this.gameData.question++ };
-    this.hostSocket.emit("show-question", {
+    const data = {
       mainPlayer: {
         username: this.mainPlayer!.username,
         socketId: this.mainPlayer!.socket.id,
       } as SimplePlayer,
       question: this.questions[this.gameData.question],
-    });
+    };
+    this.hostSocket.emit("show-question", data);
+    this.hostSocket.in(this.pin).emit("show-question", data);
   }
 }

@@ -24,10 +24,7 @@ export default function Host() {
       setPin(gamePin);
       setGameFound(true);
     });
-    socket?.on("update-lobby", (players) => {
-      setPlayers(players);
-      console.log(players);
-    });
+    socket?.on("update-lobby", setPlayers);
     socket?.on("no-game-found", () => setGameFound(false));
     socket?.on("choose-player", setChoosingPlayer);
     socket?.on("show-question", showQuestion);
@@ -35,7 +32,6 @@ export default function Host() {
 
   const startGame = () => socket?.emit("host-start-game");
   const showQuestion = (props: { mainPlayer: SimplePlayer; question: Question }) => {
-    console.log(props);
     setChoosingPlayer(false);
     setChosenPlayer(props.mainPlayer);
     setCurrentQuestion(props.question);
