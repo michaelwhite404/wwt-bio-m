@@ -75,11 +75,11 @@ export default class Game {
   answerQuestion(socketId: string, answer: LetterAnswer) {
     const player = this.getPlayer(socketId);
     if (!player) return;
-    if (answer === this.questions[this.gameData.question - 1].correctAnswer) {
-      player.correct();
+    if (!player.hasAnsweredQuestion(this.gameData.question)) {
+      const isCorrect = answer === this.questions[this.gameData.question - 1].correctAnswer;
+      player.answerQuestion(this.gameData.question, answer, isCorrect);
+      this.gameData.playersAnswered++;
+      this.hostSocket.emit("player-answer-question", this.gameData);
     }
-    // TODO: deny multiple answers
-    this.gameData.playersAnswered++;
-    this.hostSocket.emit("player-answer-question", this.gameData);
   }
 }
