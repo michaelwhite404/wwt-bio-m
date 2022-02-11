@@ -12,6 +12,7 @@ export default function Player() {
   const [started, setStarted] = useState(false);
   const [selected, setSelected] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<Omit<Question, "correctAnswer">>();
+  // const [playerState, setPlayerState] = useState("")
 
   useEffect(() => {
     socket?.on("no-game-found", () => console.log("No Game Found"));

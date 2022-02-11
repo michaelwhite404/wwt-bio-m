@@ -83,6 +83,12 @@ io.on("connection", (socket) => {
     );
   });
 
+  socket.on("main-player-join", (pin: string) => {
+    const game = games.getGame(pin);
+    if (!game) return socket.emit("no-game-found");
+    game.addMainPlayer(socket);
+  });
+
   socket.on("host-start-game", () => {
     const game = games.getGameByHostId(socket.id);
     if (!game) return socket.emit("no-game-found");
