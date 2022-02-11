@@ -1,6 +1,4 @@
-import GameData from "../../../types/GameData";
-import { Question } from "../../../types/Question";
-import SimplePlayer from "../../../types/SimplePlayer";
+import { Question, GameData, SimplePlayer } from "../../../types";
 
 export default function QuestionPrompt({
   question,

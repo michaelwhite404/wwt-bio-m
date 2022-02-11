@@ -1,6 +1,6 @@
 import React from "react";
 import { Socket } from "socket.io-client";
-import SimplePlayer from "../../../types/SimplePlayer";
+import { SimplePlayer } from "../../../types";
 
 interface ChoosePlayerProps {
   players: SimplePlayer[];

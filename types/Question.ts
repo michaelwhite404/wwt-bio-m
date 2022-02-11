@@ -1,6 +1,6 @@
 import LetterAnswer from "./LetterAnswer";
 
-export interface Question {
+export default interface Question {
   question: string;
   answers: Answer[];
   correctAnswer: string;

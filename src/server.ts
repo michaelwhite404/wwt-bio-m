@@ -9,8 +9,7 @@ import randomInt from "./helpers/randomInt";
 
 // Import classes
 import { Game, LiveGames, Player } from "./utils";
-import SimplePlayer from "../types/SimplePlayer";
-import LetterAnswer from "../types/LetterAnswer";
+import { SimplePlayer, LetterAnswer } from "../types";
 
 const games = new LiveGames();
 

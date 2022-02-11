@@ -2,9 +2,7 @@ import qs from "qs";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSocketIo } from "../hooks";
-import { Question } from "../../../types/Question";
-import SimplePlayer from "../../../types/SimplePlayer";
-import GameData from "../../../types/GameData";
+import { Question, SimplePlayer, GameData } from "../../../types";
 import QuestionPrompt from "../components/QuestionPrompt";
 import ChoosePlayer from "../components/ChoosePlayer";
 

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Question } from "../../../types/Question";
-import SimplePlayer from "../../../types/SimplePlayer";
-import LetterAnswer from "../../../types/LetterAnswer";
+import { Question, SimplePlayer, LetterAnswer } from "../../../types";
 import PlayerQuestionPrompt from "../components/PlayerQuestionPrompt";
 import { useSocketIo } from "../hooks";
 

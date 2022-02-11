@@ -1,10 +1,6 @@
 import Player from "./Player";
 import { Socket } from "socket.io";
-import { Question } from "../../types/Question";
-import SimplePlayer from "../../types/SimplePlayer";
-import LetterAnswer from "../../types/LetterAnswer";
-import GameData from "../../types/GameData";
-import GameState from "../../types/GameState";
+import { Question, SimplePlayer, LetterAnswer, GameData, GameState } from "../../types";
 
 export default class Game {
   readonly hostSocket: Socket;

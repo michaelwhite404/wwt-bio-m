@@ -1,5 +1,4 @@
-import LetterAnswer from "../../../types/LetterAnswer";
-import { Question } from "../../../types/Question";
+import { LetterAnswer, Question } from "../../../types";
 
 export default function PlayerQuestionPrompt({
   question,

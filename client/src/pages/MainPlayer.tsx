@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import GameState from "../../../types/GameState";
-import { Question } from "../../../types/Question";
+import { Question, GameState, LetterAnswer } from "../../../types";
 import PlayerQuestionPrompt from "../components/PlayerQuestionPrompt";
 import { useSocketIo } from "../hooks";
 
@@ -21,7 +20,9 @@ export default function MainPlayer() {
     });
   }, [socket]);
 
-  const answerQuestion = () => {};
+  const answerQuestion = (letterSelected: LetterAnswer) => {
+    socket?.emit("main-player-answer-question", { pin, answered: letterSelected });
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
