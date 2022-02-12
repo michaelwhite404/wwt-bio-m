@@ -115,6 +115,16 @@ io.on("connection", (socket) => {
     if (!game) return socket.emit("no-game-found");
     game.showAnswer();
   });
+
+  socket.on("disconnecting", (value) => {
+    const rooms = Array.from(socket.rooms);
+    const roomIds = rooms.filter((room) => room !== socket.id);
+    roomIds.forEach((roomId) => {
+      const game = games.getGame(roomId);
+      if (!game) return socket.emit("no-game-found");
+      game.removePlayer(socket.id);
+    });
+  });
 });
 
 const port = process.env.PORT || 7789;

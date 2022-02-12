@@ -78,6 +78,20 @@ export default class Game {
     return this;
   }
 
+  /**
+   * Removes a player from the game
+   * @param playerId The socket id of the player to remove
+   * @returns The player that was removed or `undefined` if no player was removed
+   */
+  removePlayer(playerId: string) {
+    const player = this.getPlayer(playerId);
+    if (player) {
+      this.players = this.players.filter((player) => player.socket.id !== playerId);
+      this.emitHostState();
+    }
+    return player;
+  }
+
   getPlayers() {
     return this.players;
   }
@@ -94,7 +108,7 @@ export default class Game {
     if (!this.mainPlayerSocket) return this;
     // this.gameData.questionLive = true;
     this.gameStarted = true;
-    this.updateGameState("choose-player");
+    this.gameState = "choose-player";
     this.emitStateUpdates();
     return this;
   }
@@ -108,7 +122,7 @@ export default class Game {
       mainAnswered: false,
       mainPlayerAnswer: undefined,
     };
-    this.updateGameState("choose-player");
+    this.gameState = "choose-player";
     this.emitStateUpdates();
   }
 
@@ -123,16 +137,6 @@ export default class Game {
     this.mainPlayer = player;
     this.emitStateUpdates();
     this.nextQuestion();
-  }
-
-  /**
-   * Updates the state of the game and emits the state to the sockets in this game's
-   * room
-   * @param state The state the game is updating to
-   */
-  private updateGameState(state: GameState) {
-    this.gameState = state;
-    return this;
   }
 
   private nextQuestion() {
@@ -151,7 +155,7 @@ export default class Game {
       question: this.currentQuestion,
     };
     this.emitAll("show-question", data);
-    this.updateGameState("show-question");
+    this.gameState = "show-question";
     this.emitStateUpdates();
   }
 
@@ -172,14 +176,14 @@ export default class Game {
     this.answerQuestion(this.mainPlayer!.socket.id, answer);
     this.gameData.mainAnswered = true;
     this.gameData.mainPlayerAnswer = answer;
-    this.updateGameState("main-answered");
+    this.gameState = "main-answered";
     this.emitStateUpdates();
   }
 
   showAnswer() {
     this.gameData.questionLive = false;
     this.gameData.showAnswer = true;
-    this.updateGameState("show-answer");
+    this.gameState = "show-answer";
     this.emitAll("show-answer", this.currentQuestion);
     this.emitStateUpdates();
   }

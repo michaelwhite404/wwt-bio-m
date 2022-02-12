@@ -7,6 +7,7 @@ export default function MainPlayer() {
   const socket = useSocketIo();
   const [pin, setPin] = useState("");
   const [ready, setReady] = useState(false);
+  const [playerAnswer, setPlayerAnswer] = useState<LetterAnswer>();
   const [playerState, setPlayerState] = useState<PlayerState>();
 
   useEffect(() => {
@@ -15,8 +16,13 @@ export default function MainPlayer() {
     socket?.on("change-player-state", setPlayerState);
   }, [socket]);
 
+  useEffect(() => {
+    if (playerState?.gameState === "choose-player") setPlayerAnswer(undefined);
+  }, [playerState?.gameState]);
+
   const answerQuestion = (letterSelected: LetterAnswer) => {
     socket?.emit("main-player-answer-question", { pin, answered: letterSelected });
+    setPlayerAnswer(letterSelected);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -36,11 +42,13 @@ export default function MainPlayer() {
         <button type="submit">Submit</button>
       </form>
       {ready && <div>Main Player Ready</div>}
-      {playerState?.gameState === "show-question" && playerState?.currentQuestion && (
+      {playerState?.currentQuestion && playerState.gameState !== "choose-player" && (
         <div>
           <PlayerQuestionPrompt
             question={playerState.currentQuestion}
             answerQuestion={answerQuestion}
+            correctAnswer={playerState.correctAnswer}
+            playerAnswer={playerAnswer}
           />
         </div>
       )}
