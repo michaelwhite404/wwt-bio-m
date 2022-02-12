@@ -1,6 +1,6 @@
 import Player from "./Player";
 import { Socket } from "socket.io";
-import { Question, SimplePlayer, LetterAnswer, GameData, GameState } from "../../types";
+import { Question, SimplePlayer, LetterAnswer, GameData, GameState, HostState } from "../../types";
 
 export default class Game {
   readonly hostSocket: Socket;
@@ -16,13 +16,21 @@ export default class Game {
     this.hostSocket = hostSocket;
     this.pin = String(pin);
     this.gameState = "lobby";
-    this.gameData = { playersAnswered: 0, questionLive: false, question: 0, mainAnswered: false };
+    this.gameData = {
+      playersAnswered: 0,
+      questionLive: false,
+      question: 0,
+      mainAnswered: false,
+      mainPlayerAnswer: undefined,
+      showAnswer: false,
+    };
     this.players = [];
     this.questions = questions;
     this.gameStarted = false;
     this.mainPlayer = undefined;
     this.mainPlayerSocket = undefined;
     this.hostSocket.join(this.pin); // The host is joining a room based on the pin
+    this.changeHostState();
   }
 
   /**
@@ -46,6 +54,7 @@ export default class Game {
     this.players.push(new Player(player.username, player.socket));
     player.socket.join(this.pin);
     player.socket.emit("player-ready");
+    this.changeHostState();
     return player;
   }
 
@@ -55,6 +64,7 @@ export default class Game {
       socket.join(this.pin);
       socket.emit("main-player-ready");
       socket.emit("update-game-state", this.gameState);
+      this.changeHostState();
     }
 
     return this;
@@ -79,13 +89,22 @@ export default class Game {
     this.hostSocket.in(this.pin).emit("player-start-game");
     this.updateGameState("choose-player");
     this.hostSocket.emit("choose-player");
+    this.changeHostState();
     return this;
   }
 
   choosePlayerState() {
     this.mainPlayerSocket = undefined;
+    this.mainPlayer = undefined;
+    this.gameData = {
+      ...this.gameData,
+      showAnswer: false,
+      mainAnswered: false,
+      mainPlayerAnswer: undefined,
+    };
     this.updateGameState("choose-player");
     this.emitAll("choose-player");
+    this.changeHostState();
   }
 
   get currentQuestion() {
@@ -97,6 +116,7 @@ export default class Game {
     const player = this.players.find((player) => player.socket.id === socketId);
     if (!player) return this;
     this.mainPlayer = player;
+    this.changeHostState();
     this.nextQuestion();
   }
 
@@ -117,6 +137,7 @@ export default class Game {
       questionLive: true,
       question: ++this.gameData.question,
       mainAnswered: false,
+      showAnswer: false,
     };
     const data = {
       mainPlayer: {
@@ -127,6 +148,7 @@ export default class Game {
     };
     this.emitAll("show-question", data);
     this.updateGameState("show-question");
+    this.changeHostState();
   }
 
   answerQuestion(socketId: string, answer: LetterAnswer) {
@@ -140,18 +162,43 @@ export default class Game {
       this.gameData.playersAnswered++;
       this.hostSocket.emit("player-answer-question", this.gameData);
     }
+    this.changeHostState();
   }
 
   mainPlayerAnwerQuestion(answer: LetterAnswer) {
     this.answerQuestion(this.mainPlayer!.socket.id, answer);
     this.gameData.mainAnswered = true;
+    this.gameData.mainPlayerAnswer = answer;
     this.updateGameState("main-answered");
     this.emitAll("main-player-answer-question", answer);
+    this.changeHostState();
   }
 
   showAnswer() {
     this.gameData.questionLive = false;
+    this.gameData.showAnswer = true;
     this.updateGameState("show-answer");
     this.emitAll("show-answer", this.currentQuestion);
+    this.changeHostState();
+  }
+
+  private changeHostState() {
+    const hostState: HostState = {
+      gameStarted: this.gameStarted,
+      gameState: this.gameState,
+      mainPlayer: this.mainPlayer
+        ? ({
+            username: this.mainPlayer?.username,
+            socketId: this.mainPlayer?.socket.id,
+          } as SimplePlayer)
+        : undefined,
+      players: this.getPlayers().map((p) => ({
+        username: p.username,
+        socketId: p.socket.id,
+      })) as SimplePlayer[],
+      gameData: this.gameData,
+      currentQuestion: this.currentQuestion,
+    };
+    this.hostSocket.emit("change-host-state", hostState);
   }
 }
