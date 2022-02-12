@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Question, GameState, LetterAnswer } from "../../../types";
+import { LetterAnswer, PlayerState } from "../../../types";
 import PlayerQuestionPrompt from "../components/PlayerQuestionPrompt";
 import { useSocketIo } from "../hooks";
 
@@ -7,17 +7,12 @@ export default function MainPlayer() {
   const socket = useSocketIo();
   const [pin, setPin] = useState("");
   const [ready, setReady] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState<Omit<Question, "correctAnswer">>();
-  const [gameState, setGameState] = useState<GameState>();
+  const [playerState, setPlayerState] = useState<PlayerState>();
 
   useEffect(() => {
     socket?.on("no-game-found", () => console.log("No Game Found"));
     socket?.on("main-player-ready", () => setReady(true));
-    socket?.on("update-game-state", setGameState);
-    socket?.on("show-question", (props: { question: Question }) => {
-      const { correctAnswer, ...question } = props.question;
-      setCurrentQuestion(question);
-    });
+    socket?.on("change-player-state", setPlayerState);
   }, [socket]);
 
   const answerQuestion = (letterSelected: LetterAnswer) => {
@@ -32,7 +27,7 @@ export default function MainPlayer() {
   return (
     <div>
       I'm the main player
-      <div>Game State: {gameState}</div>
+      <div>Game State: {playerState?.gameState}</div>
       <form onSubmit={handleSubmit}>
         <label htmlFor="pin">
           Pin:
@@ -41,9 +36,12 @@ export default function MainPlayer() {
         <button type="submit">Submit</button>
       </form>
       {ready && <div>Main Player Ready</div>}
-      {gameState === "show-question" && currentQuestion && (
+      {playerState?.gameState === "show-question" && playerState?.currentQuestion && (
         <div>
-          <PlayerQuestionPrompt question={currentQuestion} answerQuestion={answerQuestion} />
+          <PlayerQuestionPrompt
+            question={playerState.currentQuestion}
+            answerQuestion={answerQuestion}
+          />
         </div>
       )}
     </div>

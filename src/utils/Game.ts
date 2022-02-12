@@ -173,7 +173,6 @@ export default class Game {
     this.gameData.mainAnswered = true;
     this.gameData.mainPlayerAnswer = answer;
     this.updateGameState("main-answered");
-    this.emitAll("main-player-answer-question", answer);
     this.emitStateUpdates();
   }
 
@@ -225,6 +224,7 @@ export default class Game {
         this.gameData.showAnswer && !this.gameData.questionLive
           ? this.currentQuestion?.correctAnswer
           : undefined,
+      questionLive: this.gameData.questionLive,
     };
     this.hostSocket.in(this.pin).emit("change-player-state", playerState);
   }

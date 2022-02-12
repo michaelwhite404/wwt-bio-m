@@ -6,4 +6,5 @@ export default interface PlayerState {
   currentQuestion?: Omit<Question, "correctAnswer">;
   mainPlayer?: SimplePlayer;
   correctAnswer?: LetterAnswer;
+  questionLive: boolean;
 }

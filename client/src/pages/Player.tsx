@@ -15,11 +15,6 @@ export default function Player() {
   useEffect(() => {
     socket?.on("no-game-found", () => console.log("No Game Found"));
     socket?.on("player-ready", () => setReady(true));
-    // socket?.on("show-question", (props: { mainPlayer: SimplePlayer; question: Question }) => {
-    //   if (socket?.id === props.mainPlayer.socketId) setSelected(true);
-    //   const { correctAnswer, ...question } = props.question;
-    //   setCurrentQuestion(question);
-    // });
     socket?.on("change-player-state", setPlayerState);
   }, [socket]);
 
@@ -53,6 +48,7 @@ export default function Player() {
       {ready && "I'M READDDDDYYYYYYY"}
       {playerState?.gameStarted && <div>THE GAME HAS STARTED</div>}
       {playerState?.currentQuestion &&
+        playerState.gameState !== "choose-player" &&
         (!selected ? (
           <PlayerQuestionPrompt
             question={playerState?.currentQuestion}
