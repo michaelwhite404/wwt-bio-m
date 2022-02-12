@@ -1,0 +1,15 @@
+.answer-button {
+  font-weight: bold;
+}
+
+.answer-button.selected {
+  background-color: orange;
+}
+
+.answer-button.selected.wrong {
+  background-color: red;
+}
+
+.answer-button.correct {
+  background-color: rgb(0, 182, 0);
+}

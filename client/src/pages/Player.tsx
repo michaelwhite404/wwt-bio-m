@@ -10,7 +10,8 @@ export default function Player() {
   const [started, setStarted] = useState(false);
   const [selected, setSelected] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<Omit<Question, "correctAnswer">>();
-  // const [playerState, setPlayerState] = useState("")
+  const [correctAnswer, setCorrectAnswer] = useState<LetterAnswer>();
+  const [playerAnswer, setPlayerAnswer] = useState<LetterAnswer>();
 
   useEffect(() => {
     socket?.on("no-game-found", () => console.log("No Game Found"));
@@ -21,10 +22,14 @@ export default function Player() {
       const { correctAnswer, ...question } = props.question;
       setCurrentQuestion(question);
     });
+    socket?.on("show-answer", (question: Question) => {
+      setCorrectAnswer(question.correctAnswer);
+    });
   }, [socket]);
 
   const answerQuestion = (letterSelected: LetterAnswer) => {
     socket?.emit("player-answer-question", { pin: data.pin, answered: letterSelected });
+    setPlayerAnswer(letterSelected);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -49,7 +54,12 @@ export default function Player() {
       {started && <div>THE GAME HAS STARTED</div>}
       {currentQuestion &&
         (!selected ? (
-          <PlayerQuestionPrompt question={currentQuestion} answerQuestion={answerQuestion} />
+          <PlayerQuestionPrompt
+            question={currentQuestion}
+            answerQuestion={answerQuestion}
+            correctAnswer={correctAnswer}
+            playerAnswer={playerAnswer}
+          />
         ) : (
           "I have been selected"
         ))}
