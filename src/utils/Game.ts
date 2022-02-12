@@ -16,7 +16,7 @@ export default class Game {
     this.hostSocket = hostSocket;
     this.pin = String(pin);
     this.gameState = "lobby";
-    this.gameData = { playersAnswered: 0, questionLive: false, question: 0 };
+    this.gameData = { playersAnswered: 0, questionLive: false, question: 0, mainAnswered: false };
     this.players = [];
     this.questions = questions;
     this.gameStarted = false;
@@ -25,8 +25,25 @@ export default class Game {
     this.hostSocket.join(this.pin); // The host is joining a room based on the pin
   }
 
+  /**
+   * Emits to all clients in the room
+   * @param ev The event name
+   * @param args The arguments to send to a client
+   * @returns `true`
+   */
+  emitAll(ev: string, ...args: any[]) {
+    this.hostSocket.emit(ev, ...args);
+    this.hostSocket.in(this.pin).emit(ev, ...args);
+    return true;
+  }
+
+  /**
+   * Add a player to the game
+   * @param player The player to add to the game
+   * @returns The plaeyer
+   */
   addPlayer(player: Player) {
-    this.players.push(player);
+    this.players.push(new Player(player.username, player.socket));
     player.socket.join(this.pin);
     player.socket.emit("player-ready");
     return player;
@@ -65,6 +82,11 @@ export default class Game {
     return this;
   }
 
+  get currentQuestion() {
+    if (this.gameData.question === 0) return undefined;
+    return this.questions[this.gameData.question - 1];
+  }
+
   chooseMainPlayer(socketId: string) {
     const player = this.players.find((player) => player.socket.id === socketId);
     if (!player) return this;
@@ -79,33 +101,52 @@ export default class Game {
    */
   private updateGameState(state: GameState) {
     this.gameState = state;
-    this.hostSocket.emit("update-game-state", state);
-    this.hostSocket.in(this.pin).emit("update-game-state", state);
+    this.emitAll("update-game-state", state);
     return this;
   }
 
   private nextQuestion() {
-    this.gameData = { playersAnswered: 0, questionLive: true, question: ++this.gameData.question };
+    this.gameData = {
+      playersAnswered: 0,
+      questionLive: true,
+      question: ++this.gameData.question,
+      mainAnswered: false,
+    };
     const data = {
       mainPlayer: {
         username: this.mainPlayer!.username,
         socketId: this.mainPlayer!.socket.id,
       } as SimplePlayer,
-      question: this.questions[this.gameData.question - 1],
+      question: this.currentQuestion,
     };
     this.hostSocket.emit("show-question", data);
     this.hostSocket.in(this.pin).emit("show-question", data);
-    this.updateGameState("question");
+    this.updateGameState("show-question");
   }
 
   answerQuestion(socketId: string, answer: LetterAnswer) {
+    if (!this.gameData.questionLive) return;
     const player = this.getPlayer(socketId);
     if (!player) return;
     if (!player.hasAnsweredQuestion(this.gameData.question)) {
-      const isCorrect = answer === this.questions[this.gameData.question - 1].correctAnswer;
+      this.currentQuestion?.correctAnswer;
+      const isCorrect = answer === this.currentQuestion?.correctAnswer;
       player.answerQuestion(this.gameData.question, answer, isCorrect);
       this.gameData.playersAnswered++;
       this.hostSocket.emit("player-answer-question", this.gameData);
     }
+  }
+
+  mainPlayerAnwerQuestion(answer: LetterAnswer) {
+    this.answerQuestion(this.mainPlayer!.socket.id, answer);
+    this.gameData.mainAnswered = true;
+    this.updateGameState("main-answered");
+    this.emitAll("main-player-answer-question", answer);
+  }
+
+  showAnswer() {
+    this.gameData.questionLive = false;
+    this.updateGameState("show-answer");
+    this.emitAll("show-answer", this.currentQuestion);
   }
 }

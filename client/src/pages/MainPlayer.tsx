@@ -41,7 +41,7 @@ export default function MainPlayer() {
         <button type="submit">Submit</button>
       </form>
       {ready && <div>Main Player Ready</div>}
-      {gameState === "question" && currentQuestion && (
+      {gameState === "show-question" && currentQuestion && (
         <div>
           <PlayerQuestionPrompt question={currentQuestion} answerQuestion={answerQuestion} />
         </div>

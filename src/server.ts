@@ -100,14 +100,23 @@ io.on("connection", (socket) => {
     game.chooseMainPlayer(player.socketId);
   });
 
-  socket.on(
-    "player-answer-question",
-    ({ answered, pin }: { answered: LetterAnswer; pin: string }) => {
-      const game = games.getGame(pin);
-      if (!game) return socket.emit("no-game-found");
-      game.answerQuestion(socket.id, answered);
-    }
-  );
+  socket.on("player-answer-question", (props: { answered: LetterAnswer; pin: string }) => {
+    const game = games.getGame(props.pin);
+    if (!game) return socket.emit("no-game-found");
+    game.answerQuestion(socket.id, props.answered);
+  });
+
+  socket.on("main-player-answer-question", (props: { answered: LetterAnswer; pin: string }) => {
+    const game = games.getGame(props.pin);
+    if (!game) return socket.emit("no-game-found");
+    game.mainPlayerAnwerQuestion(props.answered);
+  });
+
+  socket.on("show-answer", (pin: string) => {
+    const game = games.getGame(pin);
+    if (!game) return socket.emit("no-game-found");
+    game.showAnswer();
+  });
 });
 
 const port = process.env.PORT || 7789;
