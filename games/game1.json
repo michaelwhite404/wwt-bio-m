@@ -20,6 +20,16 @@
         { "answer": "This is not the answer", "letter": "D" }
       ],
       "correctAnswer": "B"
+    },
+    {
+      "question": "This is question #3. The answer is C",
+      "answers": [
+        { "answer": "This is not the answer", "letter": "A" },
+        { "answer": "This is not the answer", "letter": "B" },
+        { "answer": "This is the answer", "letter": "C" },
+        { "answer": "This is not the answer", "letter": "D" }
+      ],
+      "correctAnswer": "C"
     }
   ]
 }

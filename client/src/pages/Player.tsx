@@ -25,11 +25,19 @@ export default function Player() {
     socket?.on("show-answer", (question: Question) => {
       setCorrectAnswer(question.correctAnswer);
     });
+    socket?.on("choose-player", reset);
   }, [socket]);
 
   const answerQuestion = (letterSelected: LetterAnswer) => {
     socket?.emit("player-answer-question", { pin: data.pin, answered: letterSelected });
     setPlayerAnswer(letterSelected);
+  };
+
+  const reset = () => {
+    setSelected(false);
+    setCurrentQuestion(undefined);
+    setCorrectAnswer(undefined);
+    setPlayerAnswer(undefined);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

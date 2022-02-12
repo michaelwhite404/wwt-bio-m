@@ -2,7 +2,7 @@ import qs from "qs";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSocketIo } from "../hooks";
-import { Question, SimplePlayer, GameData, LetterAnswer } from "../../../types";
+import { Question, SimplePlayer, GameData, LetterAnswer, GameState } from "../../../types";
 import QuestionPrompt from "../components/QuestionPrompt";
 import ChoosePlayer from "../components/ChoosePlayer";
 
@@ -33,11 +33,13 @@ export default function Host() {
     });
     socket?.on("update-lobby", setPlayers);
     socket?.on("no-game-found", () => setGameFound(false));
-    socket?.on("choose-player", setChoosingPlayer);
+    socket?.on("choose-player", reset);
     socket?.on("show-question", showQuestion);
     socket?.on("player-answer-question", setGameData);
     socket?.on("main-player-answer-question", setMainPlayerAnswer);
     socket?.on("show-answer", () => setRenderAnswer(true));
+
+    socket?.on("update-game-state", (state: GameState) => {});
   }, [location.search, socket]);
 
   const startGame = () => socket?.emit("host-start-game");
@@ -51,6 +53,13 @@ export default function Host() {
       question: ++data.question,
       mainAnswered: false,
     }));
+  };
+
+  const reset = () => {
+    setChoosingPlayer(true);
+    setRenderAnswer(false);
+    setCurrentQuestion(undefined);
+    setMainPlayerAnswer(undefined);
   };
 
   const showAnswer = () => socket?.emit("show-answer", pin);
@@ -82,7 +91,14 @@ export default function Host() {
       )}
       {choosingPlayer && <ChoosePlayer hostSocket={socket} players={players} />}
       {mainPlayerAnswer && !renderAnswer && <button onClick={showAnswer}>Show Answer</button>}
-      {renderAnswer && <strong>The correct answer is {currentQuestion?.correctAnswer}</strong>}
+      {renderAnswer && (
+        <div>
+          <strong>The correct answer is {currentQuestion?.correctAnswer}</strong>
+          <div>
+            <button onClick={() => socket?.emit("choose-player")}>Next Question</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

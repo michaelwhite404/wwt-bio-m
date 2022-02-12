@@ -7,7 +7,7 @@
 }
 
 .answer-button.selected.wrong {
-  background-color: red;
+  background-color: #ff8585;
 }
 
 .answer-button.correct {

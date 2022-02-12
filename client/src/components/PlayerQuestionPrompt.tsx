@@ -43,7 +43,7 @@ const AnswerButton = ({
   const className = classNames("answer-button", {
     selected: playerAnswer === answer.letter,
     correct: correctAnswer && correctAnswer === answer.letter,
-    wrong: correctAnswer && playerAnswer && correctAnswer !== playerAnswer,
+    wrong: correctAnswer && playerAnswer === answer.letter && correctAnswer !== playerAnswer,
   });
   return (
     <button

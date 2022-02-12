@@ -94,6 +94,12 @@ io.on("connection", (socket) => {
     game.startGame();
   });
 
+  socket.on("choose-player", () => {
+    const game = games.getGameByHostId(socket.id);
+    if (!game) return socket.emit("no-game-found");
+    game.choosePlayerState();
+  });
+
   socket.on("player-selected", (player: SimplePlayer) => {
     const game = games.getGameByHostId(socket.id);
     if (!game) return socket.emit("no-game-found");

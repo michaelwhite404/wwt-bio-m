@@ -73,13 +73,19 @@ export default class Game {
    */
   startGame() {
     if (this.gameStarted) return this;
+    if (!this.mainPlayerSocket) return this;
     // this.gameData.questionLive = true;
     this.gameStarted = true;
     this.hostSocket.in(this.pin).emit("player-start-game");
-    this.updateGameState("choose player");
-    this.hostSocket.emit("choose-player", true);
-    // this.hostSocket.emit("new-question", this.questions[0]);
+    this.updateGameState("choose-player");
+    this.hostSocket.emit("choose-player");
     return this;
+  }
+
+  choosePlayerState() {
+    this.mainPlayerSocket = undefined;
+    this.updateGameState("choose-player");
+    this.emitAll("choose-player");
   }
 
   get currentQuestion() {
@@ -119,8 +125,7 @@ export default class Game {
       } as SimplePlayer,
       question: this.currentQuestion,
     };
-    this.hostSocket.emit("show-question", data);
-    this.hostSocket.in(this.pin).emit("show-question", data);
+    this.emitAll("show-question", data);
     this.updateGameState("show-question");
   }
 
