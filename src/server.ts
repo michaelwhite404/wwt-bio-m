@@ -72,14 +72,6 @@ io.on("connection", (socket) => {
 
     if (game.getPlayers().some((p) => p.socket.id === socket.id)) return;
     game.addPlayer(new Player(username, socket));
-
-    socket.to(game.pin).emit(
-      "update-lobby",
-      game.getPlayers().map((p) => ({
-        username: p.username,
-        socketId: p.socket.id,
-      }))
-    );
   });
 
   socket.on("main-player-join", (pin: string) => {
