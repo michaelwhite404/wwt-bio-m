@@ -5,11 +5,13 @@ import { useSocketIo } from "../hooks";
 import { HostState } from "../../../types";
 import QuestionPrompt from "../components/QuestionPrompt";
 import ChoosePlayer from "../components/ChoosePlayer";
+import Hexagon from "../components/Hexagon";
+import PinHeader from "../components/PinHeader";
 
 export default function Host() {
   const socket = useSocketIo();
   const location = useLocation();
-  const [pin, setPin] = useState<number>();
+  const [pin, setPin] = useState<string>();
   const [gameFound, setGameFound] = useState<boolean>();
   const [hostState, setHostState] = useState<HostState>();
 
@@ -31,14 +33,16 @@ export default function Host() {
     <div className="game-container">
       {gameFound !== false ? (
         <>
-          <div>I'm the host</div>
-          <div>Game Pin: {pin}</div>
-          <br />
+          {pin && <PinHeader pin={pin} />}
           <div>Players</div>
           {hostState?.players.map((p, i) => (
             <div key={`user-${i}`}>{p.username}</div>
           ))}
-          <button onClick={startGame}>Start Game</button>
+          {!hostState?.gameStarted && (
+            <Hexagon align="center" onClick={startGame}>
+              Start Game
+            </Hexagon>
+          )}
         </>
       ) : (
         "No game found"

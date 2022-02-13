@@ -11,7 +11,6 @@
   font-size: 21px;
   font-family: sans-serif;
   user-select: none;
-  cursor: pointer;
 }
 .hexagon:before,
 .hexagon:after {
@@ -37,11 +36,12 @@
   border-bottom: 0px solid transparent;
   border-left: 0px solid transparent;
 }
-.hexagon:hover,
-.hexagon:hover:before,
-.hexagon:hover:after {
-  background-color: #2196f3;
-  color: #eee;
+.hexagon.answer:hover,
+.hexagon.answer:hover:before,
+.hexagon.answer:hover:after {
+  background-color: #313131;
+  cursor: pointer;
+  /* color: #eee; */
 }
 
 .hexagon,
@@ -71,28 +71,6 @@
   border-top: 4px solid orange;
   border-right: 4px solid orange;
 }
-
-/* .hexagon.selected.wrong,
-.hexagon.selected.wrong:before,
-.hexagon.selected.wrong:after {
-  background-color: #f24f60;
-}
-
-.hexagon.selected.wrong {
-  border-top: 4px solid #f24f60;
-  border-bottom: 4px solid #f24f60;
-}
-
-.hexagon.selected.wrong:before {
-  border-bottom: 4px solid #f24f60;
-  border-left: 4px solid #f24f60;
-}
-
-.hexagon.selected.wrong:after {
-  border-top: 4px solid #f24f60;
-  border-right: 4px solid #f24f60;
-} */
-
 .hexagon.correct,
 .hexagon.correct:before,
 .hexagon.correct:after {

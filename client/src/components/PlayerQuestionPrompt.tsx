@@ -18,7 +18,6 @@ export default function PlayerQuestionPrompt({
     <div>
       <div className="hex-container">
         <div className="hex-question">
-          {/* <AnswerHex letter="B">{question.question}</AnswerHex> */}
           <Hexagon align="center">{question.question}</Hexagon>
         </div>
         <div className="hex-grid">
@@ -34,19 +33,6 @@ export default function PlayerQuestionPrompt({
               >
                 {answer.answer}
               </AnswerHex>
-              {/* <Hexagon
-                key={answer.letter}
-                letter={answer.letter}
-                onSelect={answerQuestion}
-                selected={playerAnswer === answer.letter}
-                wrong={
-                  correctAnswer && playerAnswer === answer.letter && correctAnswer !== playerAnswer
-                }
-                correct={correctAnswer && correctAnswer === answer.letter}
-                locked={Boolean(playerAnswer)}
-              >
-                {answer.answer}
-              </Hexagon> */}
             </>
           ))}
         </div>

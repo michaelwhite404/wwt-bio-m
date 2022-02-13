@@ -1,0 +1,60 @@
+.pin-header {
+  min-height: calc((7.625rem + 5vmin) - 6.5vmin + 0rem);
+  background-color: #3f51b5;
+  transition: all 0.2s ease 0s;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.pin-header-container {
+  position: relative;
+  z-index: 141;
+  text-align: center;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: 200ms;
+}
+
+.pin-header-content {
+  display: flex;
+  flex: 1 0 auto;
+  -webkit-box-pack: center;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.pin-info {
+  display: flex;
+}
+
+.join-text {
+  background-color: white;
+  padding: 1.7vmin 2.5vmin 1.7vmin 2.8vmin;
+  border-radius: 0.5vmin 0px 0px 0.5vmin;
+  clip-path: polygon(
+    calc(100% - 2.5vmin) 0px,
+    100% 50%,
+    calc(100% - 2.5vmin) 100%,
+    0px 100%,
+    0px 0px
+  );
+}
+
+.join-pin {
+  display: flex;
+  /* flex-direction: column; */
+  -webkit-box-align: center;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  border-radius: 0px 0.5vmin 0.5vmin 0px;
+  padding: 1.7vmin 2.5vmin 1.7vmin 2.8vmin;
+  margin: 0px 0px 0px -1.5vmin;
+  clip-path: polygon(0px 0%, 100% 0px, 100% 100%, 0px 100%, 2.5vmin 50%);
+}

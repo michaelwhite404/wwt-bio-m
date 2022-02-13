@@ -3,10 +3,10 @@ import { ReactNode } from "react";
 import "./Hexagon.css";
 
 export default function Hexagon<T>(props: HexagonProps<T>) {
-  const { children, onClick, selected, correct, locked, value, align = "start" } = props;
-  const className = classNames("hexagon", { selected, correct });
+  const { children, onClick, selected, correct, locked, value, align = "start", className } = props;
+  const classN = classNames("hexagon", className, { selected, correct });
   return (
-    <div className={className} onClick={() => !locked && onClick?.(value)}>
+    <div className={classN} onClick={() => !locked && onClick?.(value)}>
       <div style={{ display: "flex", height: 70, alignItems: "center", justifyContent: align }}>
         {children}
       </div>
@@ -19,8 +19,8 @@ interface HexagonProps<T> {
   children: ReactNode;
   onClick?: (value?: T) => void;
   selected?: boolean;
-  // wrong?: boolean;
   correct?: boolean;
   locked?: boolean;
   align?: "start" | "center" | "end";
+  className?: string;
 }

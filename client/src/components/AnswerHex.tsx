@@ -11,6 +11,7 @@ export default function AnswerHex(props: AnswerHexProps) {
       value={letter}
       selected={selected}
       correct={correct}
+      className="answer"
     >
       <div style={{ marginRight: 10, color: "#F6B012", fontWeight: "bold" }}>{letter}: </div>
       <div>{children}</div>

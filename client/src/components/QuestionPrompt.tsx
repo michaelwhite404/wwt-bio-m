@@ -9,22 +9,21 @@ export default function QuestionPrompt({ hostState, hostSocket, showAnswer }: Qu
     return hostState.currentQuestion?.correctAnswer === letterAnswer;
   };
 
-  // const isWrong = (letterAnswer: LetterAnswer) => {
-  //   if (!hostState.gameData.showAnswer) return undefined;
-  //   return (
-  //     hostState.currentQuestion?.correctAnswer !== letterAnswer &&
-  //     hostState.gameData.mainPlayerAnswer === letterAnswer
-  //   );
-  // };
-
+  const nextQuestion = () => hostSocket?.emit("choose-player");
   return (
     <div className="hex-container">
-      {hostState?.gameData.mainAnswered && !hostState.gameData.showAnswer && (
-        <button onClick={showAnswer}>Show Answer</button>
-      )}
-      {hostState?.gameData.showAnswer && (
-        <button onClick={() => hostSocket?.emit("choose-player")}>Next Question</button>
-      )}
+      <div style={{ width: 200, alignSelf: "flex-end", marginRight: "2.5vw", marginBottom: 15 }}>
+        {hostState?.gameData.mainAnswered && !hostState.gameData.showAnswer && (
+          <Hexagon align="center" onClick={showAnswer}>
+            Show Answer
+          </Hexagon>
+        )}
+        {hostState?.gameData.showAnswer && (
+          <Hexagon align="center" onClick={nextQuestion}>
+            Next Question
+          </Hexagon>
+        )}
+      </div>
       <div className="hex-question">
         <Hexagon align="center">{hostState.currentQuestion?.question}</Hexagon>
       </div>
@@ -35,7 +34,6 @@ export default function QuestionPrompt({ hostState, hostSocket, showAnswer }: Qu
             letter={answer.letter}
             selected={hostState.gameData.mainPlayerAnswer === answer.letter}
             correct={isCorrect(answer.letter)}
-            // wrong={isWrong(answer.letter)}
           >
             {answer.answer}
           </AnswerHex>
