@@ -2,8 +2,8 @@
   height: 70px;
   width: calc(100% - 50px);
   margin: 0 25px;
-  border-top: 4px solid #2196f3;
-  border-bottom: 4px solid #2196f3;
+  border-top: 4px solid #f3b041;
+  border-bottom: 4px solid #f3b041;
   position: relative;
   text-align: left;
   color: #2196f3;
@@ -20,7 +20,7 @@
   top: 13px;
   height: 40px;
   width: 40px;
-  border: 4px solid #2196f3;
+  border: 4px solid #f3b041;
   -webkit-transform: scale(0.8, 1.25) rotate(45deg);
   -moz-transform: scale(0.8, 1.25) rotate(45deg);
   -ms-transform: scale(0.8, 1.25) rotate(45deg);

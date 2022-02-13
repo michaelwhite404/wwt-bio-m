@@ -31,7 +31,7 @@ export default function MainPlayer() {
   };
 
   return (
-    <div>
+    <div className="game-container">
       I'm the main player
       <div>Game State: {playerState?.gameState}</div>
       <form onSubmit={handleSubmit}>
@@ -43,7 +43,7 @@ export default function MainPlayer() {
       </form>
       {ready && <div>Main Player Ready</div>}
       {playerState?.currentQuestion && playerState.gameState !== "choose-player" && (
-        <div>
+        <div className="question-container">
           <PlayerQuestionPrompt
             question={playerState.currentQuestion}
             answerQuestion={answerQuestion}

@@ -1,0 +1,9 @@
+.game-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.question-container {
+  margin-top: auto;
+}

@@ -30,6 +30,16 @@
         { "answer": "This is not the answer", "letter": "D" }
       ],
       "correctAnswer": "C"
+    },
+    {
+      "question": "Which of these is NOT an input of photosynthesis?",
+      "answers": [
+        { "answer": "Water", "letter": "A" },
+        { "answer": "Carbon Dioxide", "letter": "B" },
+        { "answer": "Sunlight", "letter": "C" },
+        { "answer": "Oxygen", "letter": "D" }
+      ],
+      "correctAnswer": "D"
     }
   ]
 }

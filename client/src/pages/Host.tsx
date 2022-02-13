@@ -28,7 +28,7 @@ export default function Host() {
   const showAnswer = () => socket?.emit("show-answer", pin);
 
   return (
-    <div>
+    <div className="game-container">
       {gameFound !== false ? (
         <>
           <div>I'm the host</div>
@@ -43,32 +43,16 @@ export default function Host() {
       ) : (
         "No game found"
       )}
-      {/* playerState?.currentQuestion && playerState.gameState !== "choose-player" */}
-      {hostState?.currentQuestion &&
-        hostState.gameState !== "choose-player" &&
-        hostState.mainPlayer && (
-          <QuestionPrompt
-            mainPlayer={hostState.mainPlayer}
-            question={hostState.currentQuestion}
-            players={hostState.players}
-            gameData={hostState.gameData}
-            mainPlayerAnswer={hostState.gameData.mainPlayerAnswer}
-          />
-        )}
       {hostState?.gameState === "choose-player" && (
         <ChoosePlayer hostSocket={socket} players={hostState.players} />
       )}
-      {hostState?.gameData.mainAnswered && !hostState.gameData.showAnswer && (
-        <button onClick={showAnswer}>Show Answer</button>
-      )}
-      {hostState?.gameData.showAnswer && (
-        <div>
-          <strong>The correct answer is {hostState?.currentQuestion?.correctAnswer}</strong>
-          <div>
-            <button onClick={() => socket?.emit("choose-player")}>Next Question</button>
+      {hostState?.currentQuestion &&
+        hostState.gameState !== "choose-player" &&
+        hostState.mainPlayer && (
+          <div className="question-container">
+            <QuestionPrompt hostState={hostState} hostSocket={socket} showAnswer={showAnswer} />
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

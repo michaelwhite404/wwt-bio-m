@@ -15,7 +15,6 @@ export default function PlayerQuestionPrompt({
 }) {
   return (
     <div>
-      <div>{question.question}</div>
       <div className="hex-container">
         <div className="hex-question">
           <Hexagon letter="B">{question.question}</Hexagon>

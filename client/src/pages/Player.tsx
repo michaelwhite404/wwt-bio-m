@@ -36,7 +36,7 @@ export default function Player() {
     setData({ ...data, [e.target.name]: e.target.value });
 
   return (
-    <div>
+    <div className="game-container">
       I like Playing
       <form onSubmit={handleSubmit}>
         Pin:
@@ -50,12 +50,14 @@ export default function Player() {
       {playerState?.currentQuestion &&
         playerState.gameState !== "choose-player" &&
         (!selected ? (
-          <PlayerQuestionPrompt
-            question={playerState?.currentQuestion}
-            answerQuestion={answerQuestion}
-            correctAnswer={playerState.correctAnswer}
-            playerAnswer={playerAnswer}
-          />
+          <div className="question-container">
+            <PlayerQuestionPrompt
+              question={playerState?.currentQuestion}
+              answerQuestion={answerQuestion}
+              correctAnswer={playerState.correctAnswer}
+              playerAnswer={playerAnswer}
+            />
+          </div>
         ) : (
           "I have been selected"
         ))}
