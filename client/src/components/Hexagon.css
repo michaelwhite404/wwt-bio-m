@@ -72,7 +72,7 @@
   border-right: 4px solid orange;
 }
 
-.hexagon.selected.wrong,
+/* .hexagon.selected.wrong,
 .hexagon.selected.wrong:before,
 .hexagon.selected.wrong:after {
   background-color: #f24f60;
@@ -91,7 +91,7 @@
 .hexagon.selected.wrong:after {
   border-top: 4px solid #f24f60;
   border-right: 4px solid #f24f60;
-}
+} */
 
 .hexagon.correct,
 .hexagon.correct:before,

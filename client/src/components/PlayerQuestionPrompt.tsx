@@ -1,5 +1,6 @@
 import { LetterAnswer, Question } from "../../../types";
 import "./AnswerButton.css";
+import AnswerHex from "./AnswerHex";
 import Hexagon from "./Hexagon";
 
 export default function PlayerQuestionPrompt({
@@ -9,7 +10,7 @@ export default function PlayerQuestionPrompt({
   playerAnswer,
 }: {
   question: Omit<Question, "correctAnswer">;
-  answerQuestion: (letterSelected: LetterAnswer) => void;
+  answerQuestion: (letterSelected?: LetterAnswer) => void;
   correctAnswer?: LetterAnswer;
   playerAnswer?: LetterAnswer;
 }) {
@@ -17,23 +18,36 @@ export default function PlayerQuestionPrompt({
     <div>
       <div className="hex-container">
         <div className="hex-question">
-          <Hexagon letter="B">{question.question}</Hexagon>
+          {/* <AnswerHex letter="B">{question.question}</AnswerHex> */}
+          <Hexagon align="center">{question.question}</Hexagon>
         </div>
         <div className="hex-grid">
           {question.answers.map((answer) => (
-            <Hexagon
-              key={answer.letter}
-              letter={answer.letter}
-              onSelect={answerQuestion}
-              selected={playerAnswer === answer.letter}
-              wrong={
-                correctAnswer && playerAnswer === answer.letter && correctAnswer !== playerAnswer
-              }
-              correct={correctAnswer && correctAnswer === answer.letter}
-              locked={Boolean(playerAnswer)}
-            >
-              {answer.answer}
-            </Hexagon>
+            <>
+              <AnswerHex
+                key={answer.letter}
+                letter={answer.letter}
+                selected={playerAnswer === answer.letter}
+                onClick={answerQuestion}
+                locked={Boolean(playerAnswer)}
+                correct={correctAnswer && correctAnswer === answer.letter}
+              >
+                {answer.answer}
+              </AnswerHex>
+              {/* <Hexagon
+                key={answer.letter}
+                letter={answer.letter}
+                onSelect={answerQuestion}
+                selected={playerAnswer === answer.letter}
+                wrong={
+                  correctAnswer && playerAnswer === answer.letter && correctAnswer !== playerAnswer
+                }
+                correct={correctAnswer && correctAnswer === answer.letter}
+                locked={Boolean(playerAnswer)}
+              >
+                {answer.answer}
+              </Hexagon> */}
+            </>
           ))}
         </div>
       </div>

@@ -20,7 +20,7 @@ export default function MainPlayer() {
     if (playerState?.gameState === "choose-player") setPlayerAnswer(undefined);
   }, [playerState?.gameState]);
 
-  const answerQuestion = (letterSelected: LetterAnswer) => {
+  const answerQuestion = (letterSelected?: LetterAnswer) => {
     socket?.emit("main-player-answer-question", { pin, answered: letterSelected });
     setPlayerAnswer(letterSelected);
   };
