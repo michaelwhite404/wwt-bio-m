@@ -68,12 +68,14 @@ export default function Host() {
         </div>
       )}
       <div style={{ display: "flex", justifyContent: "space-around", margin: "15px 0" }}>
-        <Hexagon letter="A" />
-        <Hexagon letter="B" />
+        <Hexagon letter="A">Answer A</Hexagon>
+        <Hexagon letter="B" selected>
+          Answer B
+        </Hexagon>
       </div>
       <div style={{ display: "flex", justifyContent: "space-around", margin: "15px 0" }}>
-        <Hexagon letter="C" />
-        <Hexagon letter="D" />
+        <Hexagon letter="C">Answer C</Hexagon>
+        <Hexagon letter="D">Answer D</Hexagon>
       </div>
     </div>
   );

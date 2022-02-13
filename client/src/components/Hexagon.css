@@ -50,3 +50,66 @@
   background-color: black;
   color: #eee;
 }
+
+.hexagon.selected,
+.hexagon.selected:before,
+.hexagon.selected:after {
+  background-color: orange;
+}
+
+.hexagon.selected {
+  border-top: 4px solid orange;
+  border-bottom: 4px solid orange;
+}
+
+.hexagon.selected:before {
+  border-bottom: 4px solid orange;
+  border-left: 4px solid orange;
+}
+
+.hexagon.selected:after {
+  border-top: 4px solid orange;
+  border-right: 4px solid orange;
+}
+
+.hexagon.selected.wrong,
+.hexagon.selected.wrong:before,
+.hexagon.selected.wrong:after {
+  background-color: #f24f60;
+}
+
+.hexagon.selected.wrong {
+  border-top: 4px solid #f24f60;
+  border-bottom: 4px solid #f24f60;
+}
+
+.hexagon.selected.wrong:before {
+  border-bottom: 4px solid #f24f60;
+  border-left: 4px solid #f24f60;
+}
+
+.hexagon.selected.wrong:after {
+  border-top: 4px solid #f24f60;
+  border-right: 4px solid #f24f60;
+}
+
+.hexagon.correct,
+.hexagon.correct:before,
+.hexagon.correct:after {
+  background-color: rgb(0, 182, 0);
+}
+
+.hexagon.correct {
+  border-top: 4px solid rgb(0, 182, 0);
+  border-bottom: 4px solid rgb(0, 182, 0);
+}
+
+.hexagon.correct:before {
+  border-bottom: 4px solid rgb(0, 182, 0);
+  border-left: 4px solid rgb(0, 182, 0);
+}
+
+.hexagon.correct:after {
+  border-top: 4px solid rgb(0, 182, 0);
+  border-right: 4px solid rgb(0, 182, 0);
+}
