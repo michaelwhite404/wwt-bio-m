@@ -1,4 +1,5 @@
 import { Question, GameData, SimplePlayer, LetterAnswer } from "../../../types";
+import Hexagon from "./Hexagon";
 
 export default function QuestionPrompt({
   question,
@@ -13,16 +14,34 @@ export default function QuestionPrompt({
   mainPlayer: SimplePlayer;
   mainPlayerAnswer?: LetterAnswer;
 }) {
+  const isCorrect = (letterAnswer: LetterAnswer) => {
+    if (!gameData.showAnswer) return undefined;
+    return question.correctAnswer === letterAnswer;
+  };
+
+  const isWrong = (letterAnswer: LetterAnswer) => {
+    if (!gameData.showAnswer) return undefined;
+    return question.correctAnswer !== letterAnswer && mainPlayerAnswer === letterAnswer;
+  };
+
   return (
     <div>
       {mainPlayer.username}: Answer the following question
       <div>{question.question}</div>
       <div>
-        {question.answers.map((answer) => (
-          <div key={answer.letter}>
-            {answer.letter}: {answer.answer}
-          </div>
-        ))}
+        <div className="hex-grid">
+          {question.answers.map((answer) => (
+            <Hexagon
+              key={answer.letter}
+              letter={answer.letter}
+              selected={mainPlayerAnswer === answer.letter}
+              wrong={isWrong(answer.letter)}
+              correct={isCorrect(answer.letter)}
+            >
+              {answer.answer}
+            </Hexagon>
+          ))}
+        </div>
       </div>
       <br />
       {!mainPlayerAnswer && (

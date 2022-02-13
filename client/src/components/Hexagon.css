@@ -113,3 +113,12 @@
   border-top: 4px solid rgb(0, 182, 0);
   border-right: 4px solid rgb(0, 182, 0);
 }
+
+.hex-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 15px;
+  justify-items: center;
+}

@@ -5,7 +5,6 @@ import { useSocketIo } from "../hooks";
 import { HostState } from "../../../types";
 import QuestionPrompt from "../components/QuestionPrompt";
 import ChoosePlayer from "../components/ChoosePlayer";
-import Hexagon from "../components/Hexagon";
 
 export default function Host() {
   const socket = useSocketIo();
@@ -44,15 +43,18 @@ export default function Host() {
       ) : (
         "No game found"
       )}
-      {hostState?.currentQuestion && hostState.mainPlayer && hostState.gameData.questionLive && (
-        <QuestionPrompt
-          mainPlayer={hostState.mainPlayer}
-          question={hostState.currentQuestion}
-          players={hostState.players}
-          gameData={hostState.gameData}
-          mainPlayerAnswer={hostState.gameData.mainPlayerAnswer}
-        />
-      )}
+      {/* playerState?.currentQuestion && playerState.gameState !== "choose-player" */}
+      {hostState?.currentQuestion &&
+        hostState.gameState !== "choose-player" &&
+        hostState.mainPlayer && (
+          <QuestionPrompt
+            mainPlayer={hostState.mainPlayer}
+            question={hostState.currentQuestion}
+            players={hostState.players}
+            gameData={hostState.gameData}
+            mainPlayerAnswer={hostState.gameData.mainPlayerAnswer}
+          />
+        )}
       {hostState?.gameState === "choose-player" && (
         <ChoosePlayer hostSocket={socket} players={hostState.players} />
       )}
@@ -67,16 +69,7 @@ export default function Host() {
           </div>
         </div>
       )}
-      <div style={{ display: "flex", justifyContent: "space-around", margin: "15px 0" }}>
-        <Hexagon letter="A">Answer A</Hexagon>
-        <Hexagon letter="B" selected>
-          Answer B
-        </Hexagon>
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-around", margin: "15px 0" }}>
-        <Hexagon letter="C">Answer C</Hexagon>
-        <Hexagon letter="D">Answer D</Hexagon>
-      </div>
     </div>
+    // {}
   );
 }
