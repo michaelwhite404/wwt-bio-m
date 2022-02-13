@@ -5,6 +5,7 @@ import { useSocketIo } from "../hooks";
 import { HostState } from "../../../types";
 import QuestionPrompt from "../components/QuestionPrompt";
 import ChoosePlayer from "../components/ChoosePlayer";
+import Hexagon from "../components/Hexagon";
 
 export default function Host() {
   const socket = useSocketIo();
@@ -66,6 +67,14 @@ export default function Host() {
           </div>
         </div>
       )}
+      <div style={{ display: "flex", justifyContent: "space-around", margin: "15px 0" }}>
+        <Hexagon letter="A" />
+        <Hexagon letter="B" />
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-around", margin: "15px 0" }}>
+        <Hexagon letter="C" />
+        <Hexagon letter="D" />
+      </div>
     </div>
   );
 }

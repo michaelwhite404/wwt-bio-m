@@ -144,17 +144,10 @@ export default class Game {
       playersAnswered: 0,
       questionLive: true,
       question: ++this.gameData.question,
+      mainPlayerAnswer: undefined,
       mainAnswered: false,
       showAnswer: false,
     };
-    const data = {
-      mainPlayer: {
-        username: this.mainPlayer!.username,
-        socketId: this.mainPlayer!.socket.id,
-      } as SimplePlayer,
-      question: this.currentQuestion,
-    };
-    this.emitAll("show-question", data);
     this.gameState = "show-question";
     this.emitStateUpdates();
   }
@@ -184,7 +177,6 @@ export default class Game {
     this.gameData.questionLive = false;
     this.gameData.showAnswer = true;
     this.gameState = "show-answer";
-    this.emitAll("show-answer", this.currentQuestion);
     this.emitStateUpdates();
   }
 

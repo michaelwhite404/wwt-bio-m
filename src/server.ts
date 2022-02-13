@@ -116,7 +116,7 @@ io.on("connection", (socket) => {
     game.showAnswer();
   });
 
-  socket.on("disconnecting", (value) => {
+  socket.on("disconnecting", () => {
     const rooms = Array.from(socket.rooms);
     const roomIds = rooms.filter((room) => room !== socket.id);
     roomIds.forEach((roomId) => {
