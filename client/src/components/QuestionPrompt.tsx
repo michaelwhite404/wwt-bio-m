@@ -27,8 +27,11 @@ export default function QuestionPrompt({
   return (
     <div>
       {mainPlayer.username}: Answer the following question
-      <div>{question.question}</div>
-      <div>
+      {/* <div>{question.question}</div> */}
+      <div className="hex-container">
+        <div className="hex-question">
+          <Hexagon letter="B">{question.question}</Hexagon>
+        </div>
         <div className="hex-grid">
           {question.answers.map((answer) => (
             <Hexagon

@@ -1,6 +1,6 @@
 .hexagon {
   height: 70px;
-  width: 40vw;
+  width: calc(100% - 50px);
   margin: 0 25px;
   border-top: 4px solid #2196f3;
   border-bottom: 4px solid #2196f3;
@@ -116,9 +116,21 @@
 
 .hex-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 45vw);
   grid-template-rows: repeat(2, 1fr);
-  grid-column-gap: 0px;
+  grid-column-gap: 5vw;
   grid-row-gap: 15px;
   justify-items: center;
+  justify-content: center;
+}
+
+.hex-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.hex-question {
+  padding: 0 2.5vw;
+  margin-bottom: 20px;
 }
